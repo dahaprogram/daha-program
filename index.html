@@ -135,7 +135,7 @@ input[type=text]:focus,input[type=date]:focus{border-color:var(--or);}
       <input type="text" id="input-name" placeholder="例：田中 花子">
       <div class="eyb" style="margin-top:4px;">開始日</div>
       <input type="date" id="input-date">
-      <div class="eyb" style="margin-top:4px;">現在のレベル</div>
+      <div class="eyb" style="margin-top:4px;" id="level-select-label">現在のレベル</div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;" id="level-select">
         <div class="level-sel-btn active" onclick="selectLevel(1)" id="lsel-1" style="padding:12px 8px;border-radius:11px;border:2px solid var(--or);background:var(--or-l);text-align:center;cursor:pointer;">
           <div style="font-size:16px;font-weight:700;color:var(--or);">Lv.1</div>
@@ -184,12 +184,12 @@ input[type=text]:focus,input[type=date]:focus{border-color:var(--or);}
       <button class="btn ghost" style="font-size:13px;padding:11px;" onclick="goLv(3)">Lv.3の課題へ</button>
     </div>
     <button class="btn dk" onclick="navTo('rank')">☰ 目標のランクを確認する</button>
-    <div id="test-banner" style="display:none;background:var(--dk);border-radius:14px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;border:2px solid var(--or);" onclick="navTo('notif')">
-      <div>
-        <div style="font-size:18px;font-weight:700;color:#fff;letter-spacing:-.01em;margin-bottom:3px;">知識ミニテスト</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.5);" id="banner-rank-txt">知識ランク F</div>
+    <div id="test-banner" style="display:none;background:var(--dk);border-radius:9px;padding:9px 13px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="navTo('notif')">
+      <div style="font-size:12px;font-weight:600;color:#fff;">📋 知識ミニテスト</div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.45);" id="banner-rank-txt">知識ランク F</div>
+        <div style="font-size:11px;color:var(--or);font-weight:600;">受ける →</div>
       </div>
-      <div style="font-size:32px;">📋</div>
     </div>
     <div id="test-banner-locked" style="display:none;background:var(--soft);border-radius:10px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;">
       <div style="font-size:13px;font-weight:500;color:var(--mid);">📋 知識ミニテスト</div>
@@ -586,6 +586,11 @@ function doStart(){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('nav-home').classList.add('active');
   setTimeout(updateHomeBanner,50);
+  // レベル選択を再表示（次回のため）
+  const lsel=document.getElementById('level-select');
+  const lselLabel=document.getElementById('level-select-label');
+  if(lsel)lsel.style.display='grid';
+  if(lselLabel)lselLabel.style.display='block';
 }
 
 function applyHome(){
@@ -863,6 +868,8 @@ function confirmReset(){
     document.getElementById('input-name').value='';
     document.getElementById('input-date').value='';
     document.getElementById('bottomnav').style.display='none';
+    document.getElementById('level-select').style.display='none';
+    document.getElementById('level-select-label').style.display='none';
     document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
     document.getElementById('s-start').classList.remove('hidden');
     document.getElementById('topbar').innerHTML='<div class="dbar-logo">DAHA.<small>PROGRAM</small></div><div class="dbar-dot"></div>';
