@@ -163,7 +163,11 @@ input[type=text]:focus,input[type=date]:focus{border-color:var(--or);}
       <div class="pm"><span id="home-prog-txt"></span><span id="home-prog-pct"></span></div>
     </div>
     <div class="div"></div>
-    <button class="btn" onclick="resumeCourse()">▶ 課題を進める</button>
+    <button class="btn" onclick="resumeCourse()">▶ 課題を始める</button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <button class="btn ghost" style="font-size:13px;padding:11px;" onclick="goLv(2)">Lv.2の課題へ</button>
+      <button class="btn ghost" style="font-size:13px;padding:11px;" onclick="goLv(3)">Lv.3の課題へ</button>
+    </div>
     <button class="btn dk" onclick="navTo('rank')">☰ 目標のランクを確認する</button>
   </div>
 
@@ -179,6 +183,14 @@ input[type=text]:focus,input[type=date]:focus{border-color:var(--or);}
       <div class="mm">期間 7〜10日 • 屋内・屋外</div>
     </div>
     <div style="font-size:13px;color:var(--mid);line-height:1.7;">撮影ルールを確認して、スタートしてください。</div>
+    <div style="background:var(--soft);border-radius:11px;padding:12px 14px;">
+      <div style="font-size:10px;font-weight:600;color:var(--or);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">3フェーズで完了</div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div style="display:flex;align-items:center;gap:10px;"><div style="width:24px;height:24px;border-radius:50%;background:var(--or);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div><span style="font-size:12px;color:var(--dk);">人形撮影 × 5回</span></div>
+        <div style="display:flex;align-items:center;gap:10px;"><div style="width:24px;height:24px;border-radius:50%;background:var(--mid);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div><span style="font-size:12px;color:var(--dk);">修正再トライ × 3回</span></div>
+        <div style="display:flex;align-items:center;gap:10px;"><div style="width:24px;height:24px;border-radius:50%;background:var(--mid);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div><span style="font-size:12px;color:var(--dk);">人物撮影練習 × 2回</span></div>
+      </div>
+    </div>
     <button class="btn" style="margin-top:auto;" onclick="goScreen('s-lv1-rule','s-lv1-start')">課題をスタートする →</button>
   </div>
 
@@ -241,6 +253,67 @@ input[type=text]:focus,input[type=date]:focus{border-color:var(--or);}
     <div class="eyb">今日できたこと</div>
     <div class="chk-grid" id="lv1-checks"></div>
     <button class="btn" id="lv1-save-btn" onclick="saveLv1Daily()" disabled style="margin-top:auto;">今日のチェックを保存</button>
+  </div>
+
+  <!-- Lv.1 フェーズアップ -->
+  <div id="s-lv1-phase-up" class="screen hidden">
+    <div style="background:var(--or);border-radius:14px;padding:20px;text-align:center;margin-top:20px;">
+      <div style="font-size:28px;margin-bottom:8px;">🎉</div>
+      <div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px;" id="phase-up-title">フェーズ1 完了！</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.8);" id="phase-up-sub">次は修正再トライ × 3回です</div>
+    </div>
+    <div style="background:var(--soft);border-radius:11px;padding:14px;">
+      <div style="font-size:12px;color:var(--mid);line-height:1.8;" id="phase-up-desc">講師のフィードバックを受けて、同じ設定で再撮影に挑戦しましょう。</div>
+    </div>
+    <button class="btn" onclick="continueToNextPhase()" style="margin-top:auto;">次のフェーズへ →</button>
+  </div>
+
+  <!-- Lv.2 スタート -->
+  <div id="s-lv2-start" class="screen hidden">
+    <div style="display:flex;gap:7px;margin-bottom:2px;">
+      <span style="font-size:11px;font-weight:600;padding:4px 11px;border-radius:20px;background:var(--or);color:#fff;">Lv.2</span>
+    </div>
+    <div class="mc">
+      <div class="ml">ランク2 課題</div>
+      <div class="mt">AfterEffects<br>チュートリアル 1〜7</div>
+      <div class="mm">順番に進める • プロジェクト提出</div>
+    </div>
+    <div style="font-size:13px;color:var(--mid);line-height:1.7;">7つのチュートリアルを順番にこなし、プロジェクトファイルをChatWorkで提出してください。</div>
+    <div style="background:var(--soft);border-radius:11px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;">
+      <div style="font-size:10px;font-weight:600;color:var(--or);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px;">チュートリアル内容</div>
+      <div style="font-size:12px;color:var(--dk);">01 トランジション　02 テキストモーション　03 シェイプエフェクト　04 キャラクターアニメーション　05 パスのトリミング　06 グラフエディター　07 緩急</div>
+    </div>
+    <button class="btn" style="margin-top:auto;" onclick="goScreen('s-lv2-steps','s-lv2-start')">課題をスタートする →</button>
+  </div>
+
+  <!-- Lv.2 ステップ一覧 -->
+  <div id="s-lv2-steps" class="screen hidden">
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div class="eyb">進捗</div>
+        <div style="font-size:11px;color:var(--or);font-weight:600;" id="lv2-prog-label">0 / 7 完了</div>
+      </div>
+      <div class="pb"><div class="pf" id="lv2-prog" style="width:0%;"></div></div>
+    </div>
+    <div class="step-list" id="lv2-step-list"></div>
+    <button class="btn" id="lv2-complete-btn" onclick="goScreen('s-lv2-submit','s-lv2-steps')" disabled style="margin-top:auto;">提出画面へ →</button>
+  </div>
+
+  <!-- Lv.2 提出 -->
+  <div id="s-lv2-submit" class="screen hidden">
+    <div style="background:var(--or);border-radius:14px;padding:16px;text-align:center;">
+      <div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px;">全7本 完了！</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.8);">プロジェクトファイル（.aep）をChatWorkで提出してください</div>
+    </div>
+    <div class="div"></div>
+    <div class="eyb">提出ステータス</div>
+    <div>
+      <div class="ss-row"><div class="ss-lw"><div class="ss-c done">✓</div><div class="ss-vl"></div></div><div><div class="ss-t">全チュートリアル完了</div><div class="ss-s">7 / 7本</div></div></div>
+      <div class="ss-row"><div class="ss-lw"><div class="ss-c act">→</div><div class="ss-vl"></div></div><div><div class="ss-t">ファイルを提出中</div><div class="ss-s">ChatWorkで .aep を送付</div></div></div>
+      <div class="ss-row"><div class="ss-lw"><div class="ss-c emp"></div><div class="ss-vl"></div></div><div><div class="ss-t dim">講師チェック待ち</div><div class="ss-s dim">フィードバックはChatWork</div></div></div>
+      <div class="ss-row"><div class="ss-lw"><div class="ss-c emp"></div></div><div><div class="ss-t dim">ランク審査へ</div><div class="ss-s dim">確認済みで進む</div></div></div>
+    </div>
+    <button class="btn dk" onclick="markSubmitted(2)" style="margin-top:auto;">提出済みにする</button>
   </div>
 
   <!-- Lv.1 提出 -->
@@ -388,6 +461,7 @@ const RANK_DATA=[
   {lv:10,title:'ワンオペの卒業 & 講師認定'},
 ];
 const LV1_CHECKS=['暗い場所で撮影','明るい場所で撮影','屋外で撮影','屋内で撮影','広角で撮影','望遠で撮影'];
+const LV2_STEPS=['トランジション','テキストモーション','シェイプエフェクト','キャラクターアニメーション','パスのトリミング','グラフエディター','緩急'];
 const LV3_STEPS=['制作先の声かけ','制作先決定','打ち合わせと深堀り','構成作成','インタビュー原稿作成','OP & ローワーサードデザイン','撮影準備 & 制作','撮影','粗編集','アニメーション編集','完パケ'];
 const QUESTIONS=[
   {q:'シャッタースピードを上げると映像はどうなる？',opts:['動きがぼける','動きがくっきりする','明るくなる','色が変わる'],ans:1},
@@ -410,7 +484,8 @@ function doStart(){
   const d=document.getElementById('input-date').value;
   if(!n||!d)return;
   state.name=n;state.date=d;state.currentLevel=1;
-  state.lv1={daysShot:0,submitted:false};
+  state.lv1={phase:1,phaseDays:[0,0,0],submitted:false};
+  state.lv2={stepsCompleted:0,submitted:false};
   state.lv3={stepsCompleted:0,submitted:false};
   saveState();applyHome();
   goScreen('s-lv1-start',null);
@@ -424,11 +499,20 @@ function applyHome(){
   document.getElementById('home-lv').textContent='Lv.'+state.currentLevel;
   const lv=state.currentLevel;
   if(lv===1){
-    const d=state.lv1.daysShot,pct=Math.round(d/10*100);
+    const pd=state.lv1.phaseDays||[0,0,0];
+    const total=pd[0]+pd[1]+pd[2];
+    const pct=Math.round(total/10*100);
     document.getElementById('home-prog').style.width=pct+'%';
-    document.getElementById('home-prog-txt').textContent=d+' / 10日';
+    document.getElementById('home-prog-txt').textContent=total+' / 10日';
     document.getElementById('home-prog-pct').textContent=pct+'%';
-    document.getElementById('home-progress-label').textContent=d+'日撮影済み';
+    const phase=state.lv1.phase||1;
+    const phaseLabel=['','人形撮影','修正再トライ','人物撮影練習'];
+    document.getElementById('home-progress-label').textContent='フェーズ'+phase+'：'+phaseLabel[phase];
+  } else if(lv===2){
+    if(!state.lv2)state.lv2={stepsCompleted:0,submitted:false};
+    if(state.lv2.submitted){goScreen('s-submitted',null);return;}
+    if(state.lv2.stepsCompleted>=7){goScreen('s-lv2-submit','s-home');return;}
+    buildLv2Steps();goScreen('s-lv2-steps','s-home');
   } else if(lv===3){
     const s=state.lv3.stepsCompleted,pct=Math.round(s/11*100);
     document.getElementById('home-prog').style.width=pct+'%';
@@ -442,8 +526,14 @@ function resumeCourse(){
   const lv=state.currentLevel;
   if(lv===1){
     if(state.lv1.submitted){goScreen('s-submitted',null);return;}
-    if(state.lv1.daysShot>=5){goScreen('s-lv1-submit','s-home');return;}
+    const pd=state.lv1.phaseDays||[0,0,0];
+    if(pd[0]>=5&&pd[1]>=3&&pd[2]>=2){goScreen('s-lv1-submit','s-home');return;}
     initLv1Daily();goScreen('s-lv1-daily','s-home');
+  } else if(lv===2){
+    if(!state.lv2)state.lv2={stepsCompleted:0,submitted:false};
+    if(state.lv2.submitted){goScreen('s-submitted',null);return;}
+    if(state.lv2.stepsCompleted>=7){goScreen('s-lv2-submit','s-home');return;}
+    buildLv2Steps();goScreen('s-lv2-steps','s-home');
   } else if(lv===3){
     if(state.lv3.submitted){goScreen('s-submitted',null);return;}
     if(state.lv3.stepsCompleted>=11){goScreen('s-lv3-submit','s-home');return;}
@@ -452,6 +542,10 @@ function resumeCourse(){
 }
 
 // Lv1
+function getLv1Phase(){return state.lv1.phase||1;}
+function getLv1PhaseMax(){const m=[5,3,2];return m[(getLv1Phase()-1)];}
+function getLv1PhaseLabel(){const l=['人形撮影（5回）','修正再トライ（3回）','人物撮影練習（2回）'];return l[getLv1Phase()-1];}
+
 function initLv1Daily(){
   lv1Checked=new Array(6).fill(false);
   const el=document.getElementById('lv1-checks');el.innerHTML='';
@@ -468,19 +562,41 @@ function toggleLv1(i){
 }
 function buildLv1Dots(){
   const el=document.getElementById('lv1-dots');el.innerHTML='';
-  const d=state.lv1.daysShot;
-  document.getElementById('lv1-days-txt').textContent=d+'日撮影済み';
-  document.getElementById('lv1-prog').style.width=Math.round(d/10*100)+'%';
-  for(let i=0;i<10;i++){
-    const cls=i<d?'done':i===d?'today':'emp';
+  const pd=state.lv1.phaseDays||[0,0,0];
+  const phase=getLv1Phase();
+  const phaseDay=pd[phase-1];
+  const maxDay=getLv1PhaseMax();
+  document.getElementById('lv1-days-txt').textContent=getLv1PhaseLabel()+' '+phaseDay+'/'+maxDay+'回';
+  document.getElementById('lv1-prog').style.width=Math.round(phaseDay/maxDay*100)+'%';
+  for(let i=0;i<maxDay;i++){
+    const cls=i<phaseDay?'done':i===phaseDay?'today':'emp';
     el.innerHTML+=`<div class="dd ${cls}">${i+1}</div>`;
   }
 }
 function saveLv1Daily(){
-  state.lv1.daysShot=Math.min(state.lv1.daysShot+1,10);
+  const phase=getLv1Phase();
+  const max=getLv1PhaseMax();
+  if(!state.lv1.phaseDays)state.lv1.phaseDays=[0,0,0];
+  state.lv1.phaseDays[phase-1]=Math.min(state.lv1.phaseDays[phase-1]+1,max);
+  const pd=state.lv1.phaseDays;
+  if(pd[0]>=5&&phase===1){state.lv1.phase=2;}
+  if(pd[1]>=3&&phase===2){state.lv1.phase=3;}
   saveState();applyHome();
-  if(state.lv1.daysShot>=5){goScreen('s-lv1-submit',null);}
-  else{navTo('home');}
+  const done=pd[0]>=5&&pd[1]>=3&&pd[2]>=2;
+  if(done){goScreen('s-lv1-submit',null);}
+  else{
+    if(state.lv1.phaseDays[phase-1]>=max&&phase<3){
+      const nextPhase=phase+1;
+      const titles=['','人形撮影','修正再トライ','人物撮影練習'];
+      const descs=['','','講師のフィードバックを受けて、同じ設定で再撮影に挑戦しましょう。','いよいよ人物撮影です。デッサン人形で練習した構図・光・焦点距離を活かしてください。'];
+      document.getElementById('phase-up-title').textContent='フェーズ'+phase+' 完了！';
+      document.getElementById('phase-up-sub').textContent='次は'+titles[nextPhase]+' × '+(nextPhase===2?3:2)+'回です';
+      document.getElementById('phase-up-desc').textContent=descs[nextPhase];
+      goScreen('s-lv1-phase-up',null);
+    } else {
+      navTo('home');
+    }
+  }
 }
 
 // Lv3
@@ -516,8 +632,48 @@ function uncompleteStep(i){
   }
 }
 
+function buildLv2Steps(){
+  const done=state.lv2?state.lv2.stepsCompleted:0;
+  const el=document.getElementById('lv2-step-list');el.innerHTML='';
+  const pct=Math.round(done/7*100);
+  document.getElementById('lv2-prog').style.width=pct+'%';
+  document.getElementById('lv2-prog-label').textContent=done+' / 7 完了';
+  LV2_STEPS.forEach((s,i)=>{
+    const isDone=i<done,isActive=i===done;
+    const cls='step-item'+(isDone?' done-s':isActive?' active-s':' locked');
+    const onclick=isActive?`onclick="completeLv2Step(${i})"`:isDone?`onclick="uncompleteLv2Step(${i})"`:''
+    el.innerHTML+=`<div class="${cls}" ${onclick}>
+      <div class="step-num">${isDone?'✓':i+1}</div>
+      <span class="step-txt">${s}</span>
+      ${isActive?'<span style="font-size:11px;color:var(--or);font-weight:600;">完了 →</span>':''}
+    </div>`;
+  });
+  document.getElementById('lv2-complete-btn').disabled=done<7;
+}
+function completeLv2Step(i){
+  if(!state.lv2)state.lv2={stepsCompleted:0,submitted:false};
+  if(i===state.lv2.stepsCompleted){
+    state.lv2.stepsCompleted=Math.min(i+1,7);
+    saveState();buildLv2Steps();
+    if(state.lv2.stepsCompleted>=7){goScreen('s-lv2-submit',null);}
+  }
+}
+function uncompleteLv2Step(i){
+  if(!state.lv2)state.lv2={stepsCompleted:0,submitted:false};
+  if(i===state.lv2.stepsCompleted-1){
+    state.lv2.stepsCompleted=Math.max(i,0);
+    saveState();buildLv2Steps();
+  }
+}
+
+function continueToNextPhase(){
+  const phase=state.lv1.phase;
+  initLv1Daily();goScreen('s-lv1-daily',null);
+}
+
 function markSubmitted(lv){
   if(lv===1)state.lv1.submitted=true;
+  if(lv===2){if(!state.lv2)state.lv2={stepsCompleted:0,submitted:false};state.lv2.submitted=true;}
   if(lv===3)state.lv3.submitted=true;
   saveState();
   goScreen('s-submitted',null);
@@ -540,6 +696,11 @@ function buildRankList(){
     const tag=cur?'<span class="rl-tag">現在</span>':cmp?'<span class="rl-tag">完了</span>':'<span class="rl-tag emp">未達成</span>';
     el.innerHTML+=`<div class="${cls}"><div class="rl-lv">Lv.${r.lv}</div><div style="flex:1;"><div class="rl-title">${r.title}</div></div>${tag}</div>`;
   });
+}
+
+function goLv(lv){
+  if(lv===2){state.currentLevel=2;if(!state.lv2)state.lv2={stepsCompleted:0,submitted:false};saveState();applyHome();goScreen('s-lv2-start','s-home');}
+  if(lv===3){state.currentLevel=3;saveState();applyHome();goScreen('s-lv3-start','s-home');}
 }
 
 function startTest(){currentQ=0;correctCount=0;answered=false;renderQ();goScreen('s-test','s-notif');}
@@ -580,6 +741,8 @@ function nextQ(){
 const SCREEN_TITLES={
   's-lv1-start':'ランク1 課題','s-lv1-rule':'撮影ルール確認','s-lv1-size':'6サイズガイド',
   's-lv1-daily':'今日のチェック','s-lv1-submit':'課題を提出する',
+  's-lv1-phase-up':'フェーズ完了',
+  's-lv2-start':'ランク2 課題','s-lv2-steps':'AEチュートリアル','s-lv2-submit':'課題を提出する',
   's-lv3-start':'ランク3 課題','s-lv3-steps':'インタビュー動画制作','s-lv3-submit':'課題を提出する',
   's-submitted':'提出済み','s-notif':'通知','s-test':'知識テスト','s-result':'テスト結果','s-rank':'ランク一覧',
 };
