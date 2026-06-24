@@ -165,7 +165,7 @@ input[type=text]:focus,input[type=date]:focus{border-color:var(--or);}
       </div>
       <div style="text-align:right;">
         <div style="font-size:28px;font-weight:700;color:var(--or);letter-spacing:-.03em;line-height:1;" id="home-lv">Lv.1</div>
-        <div style="font-size:10px;color:var(--mid);letter-spacing:.06em;text-transform:uppercase;" id="home-kn">知識 F</div>
+        <div style="font-size:10px;color:var(--mid);letter-spacing:.06em;text-transform:uppercase;" id="home-kn">知識F／0ポイント</div>
       </div>
     </div>
     <div class="div"></div>
@@ -438,31 +438,20 @@ input[type=text]:focus,input[type=date]:focus{border-color:var(--or);}
   <!-- 知識テスト入口 -->
   <div id="s-notif" class="screen hidden">
     <div style="background:var(--dk);border-radius:14px;padding:16px;">
-      <div style="font-size:10px;font-weight:600;color:var(--or);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;">知識ミニテスト</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-        <div style="font-size:16px;font-weight:500;color:#fff;">12問 • 2週に1度</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div style="font-size:20px;font-weight:700;color:#fff;">知識ミニテスト</div>
         <div style="text-align:right;">
-          <div style="font-size:22px;font-weight:700;color:var(--or);line-height:1;" id="test-krank">F</div>
-          <div style="font-size:9px;color:rgba(255,255,255,.4);">知識ランク</div>
+          <div style="font-size:26px;font-weight:700;color:var(--or);line-height:1;" id="test-krank">F</div>
+          <div style="font-size:9px;color:rgba(255,255,255,.4);margin-top:2px;">知識ランク</div>
         </div>
       </div>
-      <div style="margin-bottom:5px;">
-        <div class="pb" style="height:4px;"><div class="pf" id="test-rank-prog" style="width:0%;"></div></div>
-        <div style="display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,.4);margin-top:3px;"><span id="test-correct-count">累計正解 0問</span><span id="test-next-rank">次のランクまで 30問</span></div>
-      </div>
-      <div style="font-size:12px;color:rgba(255,255,255,.5);" id="test-availability-msg">受験できます</div>
+      <div class="pb" style="height:4px;margin-bottom:5px;"><div class="pf" id="test-rank-prog" style="width:0%;"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:rgba(255,255,255,.4);"><span id="test-correct-count">累計正解 0問</span><span id="test-next-rank">次のランクまで 30問</span></div>
     </div>
-    <div style="background:var(--soft);border-radius:11px;padding:12px 14px;">
-      <div style="font-size:10px;font-weight:600;color:var(--mid);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">出題形式</div>
-      <div style="display:flex;flex-direction:column;gap:6px;">
-        <div style="display:flex;align-items:center;gap:10px;"><div style="width:24px;height:24px;border-radius:6px;background:var(--or);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div><span style="font-size:12px;color:var(--dk);">4択問題</span></div>
-        <div style="display:flex;align-items:center;gap:10px;"><div style="width:24px;height:24px;border-radius:6px;background:var(--dk);color:var(--or);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">穴</div><span style="font-size:12px;color:var(--dk);">穴埋め問題</span></div>
-
-      </div>
-    </div>
+    <div style="font-size:12px;color:var(--mid);text-align:center;" id="test-availability-msg"></div>
     <div style="font-size:11px;color:var(--mid);text-align:center;" id="test-last-date"></div>
-    <button class="btn" id="test-start-btn" onclick="startMiniTest()">テストをはじめる →</button>
-    <button class="btn ghost" onclick="navTo('home')" style="margin-top:0;">あとで受ける</button>
+    <button class="btn" id="test-start-btn" onclick="startMiniTest()" style="margin-top:auto;">テストをはじめる →</button>
+    <button class="btn ghost" onclick="navTo('home')" style="margin-top:0;">ホームに戻る</button>
   </div>
 
   <!-- 知識テスト問題 -->
@@ -921,7 +910,7 @@ function updateKnowledgeRankDisplay(){
   }
   // ホームの知識ランク表示も更新
   const homeKn=document.getElementById('home-kn');
-  if(homeKn)homeKn.textContent='知識 '+rank;
+  if(homeKn)homeKn.textContent='知識'+rank+'／'+(state.totalCorrect||0)+'ポイント';
 }
 
 function checkTestAvailability(){
@@ -1107,9 +1096,9 @@ const SCREEN_TITLES={
   's-lv1-phase-up':'フェーズ完了',
   's-lv2-start':'ランク2 課題','s-lv2-steps':'AEチュートリアル','s-lv2-submit':'課題を提出する',
   's-lv3-start':'ランク3 課題','s-lv3-midpoint':'1本目完了','s-lv3-steps':'インタビュー動画制作','s-lv3-submit':'課題を提出する',
-  's-submitted':'提出済み','s-notif':'通知','s-test':'知識テスト','s-result':'テスト結果','s-rank':'ランク一覧',
+  's-submitted':'提出済み','s-notif':'知識ミニテスト','s-mini-test':'知識ミニテスト','s-mini-result':'テスト結果','s-rank':'ランク一覧',
 };
-const NAV_SCREENS=['s-home','s-rank','s-notif','s-mini-result','s-submitted','s-mini-test'];
+const NAV_SCREENS=['s-home','s-rank','s-notif','s-mini-result','s-submitted'];
 
 function goScreen(id,prevId){
   if(prevId)historyStack.push(prevId);
