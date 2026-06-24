@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>DAHA. PROGRAM</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--or:#F05A00;--or-l:#FFF0E6;--dk:#111;--mid:#666;--soft:#F5F5F5;--bd:rgba(0,0,0,0.09);--wh:#fff;}
+html,body{height:100%;background:#e8e8e8;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;display:flex;justify-content:center;align-items:flex-start;}
+.device{width:100%;max-width:390px;min-height:100vh;background:var(--wh);display:flex;flex-direction:column;}
+.dbar{background:var(--dk);padding:52px 18px 10px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;min-height:80px;}
+.dbar-logo{font-size:16px;font-weight:700;color:var(--or);letter-spacing:-.02em;line-height:1;}
+.dbar-logo small{font-size:9px;font-weight:400;color:rgba(255,255,255,.4);display:block;letter-spacing:.06em;}
+.dbar-dot{width:7px;height:7px;border-radius:50%;background:var(--or);}
+.dbar-title{font-size:14px;font-weight:500;color:#fff;}
+.dbar-back{font-size:28px;color:rgba(255,255,255,.8);cursor:pointer;line-height:1;padding:2px 6px;-webkit-tap-highlight-color:transparent;}
+.screen{padding:20px 18px;flex:1;display:flex;flex-direction:column;gap:12px;overflow-y:auto;padding-bottom:110px;}
+.screen.hidden{display:none;}
+.div{height:.5px;background:var(--bd);}
+.eyb{font-size:10px;font-weight:600;color:var(--mid);letter-spacing:.08em;text-transform:uppercase;}
+.pb{height:5px;background:rgba(0,0,0,.08);border-radius:99px;}
+.pf{height:5px;background:var(--or);border-radius:99px;transition:width .4s ease;}
+.pm{display:flex;justify-content:space-between;font-size:11px;color:var(--mid);margin-top:3px;}
+.btn{background:var(--or);color:#fff;font-size:15px;font-weight:600;padding:15px;border-radius:13px;text-align:center;cursor:pointer;border:none;width:100%;-webkit-tap-highlight-color:transparent;}
+.btn:active{opacity:.8;}
+.btn.dk{background:var(--dk);}
+.btn.ghost{background:var(--soft);color:var(--dk);}
+.btn:disabled{opacity:.35;pointer-events:none;}
+.nav{display:flex;border-top:.5px solid var(--bd);background:var(--wh);padding-bottom:env(safe-area-inset-bottom);flex-shrink:0;}
+.nav-item{flex:1;padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.nav-item svg{width:24px;height:24px;stroke:#bbb;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.nav-item span{font-size:10px;color:#bbb;font-weight:500;}
+.nav-item.active svg{stroke:var(--or);}
+.nav-item.active span{color:var(--or);}
+.mc{background:var(--dk);border-radius:13px;padding:16px;}
+.ml{font-size:10px;font-weight:600;color:var(--or);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;}
+.mt{font-size:16px;font-weight:500;color:#fff;line-height:1.4;margin-bottom:6px;}
+.mm{font-size:11px;color:rgba(255,255,255,.4);}
+.rb{background:var(--soft);border-radius:11px;padding:12px 14px;}
+.rbt{font-size:10px;font-weight:600;color:var(--or);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;}
+.rr{display:flex;align-items:flex-start;gap:8px;margin-bottom:5px;}
+.rr:last-child{margin-bottom:0;}
+.rd{width:6px;height:6px;border-radius:50%;background:var(--or);margin-top:5px;flex-shrink:0;}
+.rd.g{background:#ccc;}
+.rtx{font-size:12px;color:var(--dk);line-height:1.5;}
+.rwn{color:var(--or);font-weight:600;}
+.ddots{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;margin-top:6px;}
+.dd{height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;}
+.dd.done{background:var(--or);color:#fff;}
+.dd.today{background:var(--dk);color:var(--or);}
+.dd.emp{background:var(--soft);color:#ccc;}
+.chk-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.ci{display:flex;align-items:center;gap:8px;padding:10px 11px;border-radius:10px;border:.5px solid var(--bd);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.ci.on{border-color:var(--or);background:var(--or-l);}
+.cb{width:17px;height:17px;border-radius:5px;border:1.5px solid var(--bd);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.ci.on .cb{background:var(--or);border-color:var(--or);}
+.ci.on .cb::after{content:'';width:7px;height:4px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:rotate(-45deg) translateY(-1px);display:block;}
+.ct{font-size:12px;color:var(--dk);line-height:1.3;}
+.ci.on .ct{color:var(--or);font-weight:600;}
+.step-list{display:flex;flex-direction:column;gap:8px;}
+.step-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:11px;border:.5px solid var(--bd);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.step-item.done-s{background:var(--soft);border-color:transparent;}
+.step-item.active-s{border-color:var(--or);background:var(--or-l);}
+.step-item.locked{opacity:.4;pointer-events:none;}
+.step-num{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:var(--mid);}
+.step-item.done-s .step-num{background:var(--or);border-color:var(--or);color:#fff;}
+.step-item.active-s .step-num{background:var(--dk);border-color:var(--dk);color:var(--or);}
+.step-txt{font-size:13px;color:var(--dk);line-height:1.3;flex:1;}
+.step-item.done-s .step-txt{color:#aaa;text-decoration:line-through;}
+.step-item.active-s .step-txt{color:var(--or);font-weight:600;}
+.opt{padding:13px 14px;border-radius:11px;border:.5px solid var(--bd);font-size:13px;color:var(--dk);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.opt:active{background:var(--soft);}
+.opt.correct{background:#E8F7EF;color:#0A6B3A;border-color:#0A6B3A;}
+.opt.wrong{background:#FDEAEA;color:#991B1B;border-color:#991B1B;}
+.qcard{background:var(--soft);border-radius:12px;padding:16px;font-size:13px;color:var(--dk);line-height:1.7;}
+input[type=text],input[type=date]{width:100%;padding:13px 14px;border-radius:11px;border:.5px solid var(--bd);font-size:15px;color:var(--dk);background:var(--soft);outline:none;-webkit-appearance:none;}
+input[type=text]:focus,input[type=date]:focus{border-color:var(--or);}
+.result-num{font-size:56px;font-weight:700;color:var(--or);letter-spacing:-.04em;line-height:1;text-align:center;}
+.result-lbl{font-size:11px;color:var(--mid);letter-spacing:.08em;text-transform:uppercase;text-align:center;margin-top:5px;}
+.level-up{font-size:14px;font-weight:500;color:var(--dk);text-align:center;padding:12px 16px;background:var(--or-l);border-radius:11px;}
+.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.sgi{background:var(--soft);border-radius:9px;padding:9px 6px;text-align:center;font-size:11px;font-weight:600;color:var(--dk);line-height:1.3;}
+.sgi span{font-size:9px;color:var(--mid);display:block;margin-top:3px;font-weight:400;}
+.ss-row{display:flex;gap:10px;align-items:flex-start;padding-bottom:10px;}
+.ss-row:last-child{padding-bottom:0;}
+.ss-lw{display:flex;flex-direction:column;align-items:center;width:16px;flex-shrink:0;}
+.ss-c{width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;}
+.ss-c.done{background:var(--or);color:#fff;}
+.ss-c.act{background:var(--dk);color:var(--or);}
+.ss-c.emp{background:var(--soft);border:1px solid var(--bd);}
+.ss-vl{flex:1;width:1px;background:var(--bd);min-height:12px;margin:2px 0;}
+.ss-t{font-size:13px;font-weight:500;color:var(--dk);}
+.ss-s{font-size:11px;color:var(--mid);margin-top:2px;}
+.ss-t.dim{color:#bbb;}.ss-s.dim{color:#ccc;}
+.rl-item{display:flex;align-items:flex-start;gap:12px;padding:11px 13px;border-radius:12px;border:.5px solid var(--bd);margin-bottom:6px;}
+.rl-item.cur{border-color:var(--or);background:var(--or-l);}
+.rl-item.cmp{background:var(--soft);border-color:transparent;}
+.rl-lv{font-size:14px;font-weight:700;width:36px;flex-shrink:0;padding-top:1px;color:var(--dk);}
+.rl-item.cur .rl-lv{color:var(--or);}
+.rl-item.cmp .rl-lv{color:#bbb;}
+.rl-title{font-size:13px;font-weight:500;line-height:1.5;color:var(--dk);}
+.rl-item.cur .rl-title{color:var(--or);}
+.rl-item.cmp .rl-title{color:#bbb;}
+.rl-tag{font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;flex-shrink:0;margin-top:1px;}
+.rl-item.cur .rl-tag{background:var(--or);color:#fff;}
+.rl-item.cmp .rl-tag{background:#e0e0e0;color:#aaa;}
+.rl-tag.emp{background:var(--soft);color:#ccc;}
+.rule-tog{border:.5px solid var(--bd);border-radius:10px;padding:11px 13px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.chkd{width:20px;height:20px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--or);border:2px solid var(--or);}
+.chkd::after{content:'';width:9px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translateY(-1px);display:block;}
+.ti{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;border:.5px solid var(--bd);}
+.tt{font-size:13px;color:var(--dk);}
+</style>
+</head>
+<body>
+<div class="device">
+  <div class="dbar" id="topbar">
+    <div class="dbar-logo">DAHA.<small>PROGRAM</small></div>
+    <div class="dbar-dot"></div>
+  </div>
+
+  <!-- 開始 -->
+  <div id="s-start" class="screen">
+    <div style="margin-top:8px;">
+      <div style="font-size:26px;font-weight:700;color:var(--or);letter-spacing:-.03em;margin-bottom:6px;">DAHA.<span style="font-size:15px;font-weight:400;color:var(--mid);letter-spacing:.04em;"> PROGRAM</span></div>
+      <div style="font-size:14px;color:var(--mid);">はじめに情報を入力してください</div>
+    </div>
+    <div class="div"></div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div class="eyb">名前</div>
+      <input type="text" id="input-name" placeholder="例：田中 花子">
+      <div class="eyb" style="margin-top:4px;">開始日</div>
+      <input type="date" id="input-date">
+    </div>
+    <div style="margin-top:auto;">
+      <button class="btn" onclick="doStart()">はじめる →</button>
+    </div>
+  </div>
+
+  <!-- ホーム -->
+  <div id="s-home" class="screen hidden">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;">
+      <div>
+        <div style="font-size:22px;font-weight:500;color:var(--dk);letter-spacing:-.02em;" id="home-name"></div>
+        <div style="font-size:12px;color:var(--mid);margin-top:3px;" id="home-date"></div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:28px;font-weight:700;color:var(--or);letter-spacing:-.03em;line-height:1;" id="home-lv">Lv.1</div>
+        <div style="font-size:10px;color:var(--mid);letter-spacing:.06em;text-transform:uppercase;">知識 E</div>
+      </div>
+    </div>
+    <div class="div"></div>
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div class="eyb">課題の進捗</div>
+        <div style="font-size:11px;color:var(--or);font-weight:600;" id="home-progress-label"></div>
+      </div>
+      <div class="pb"><div class="pf" id="home-prog" style="width:0%;"></div></div>
+      <div class="pm"><span id="home-prog-txt"></span><span id="home-prog-pct"></span></div>
+    </div>
+    <div class="div"></div>
+    <button class="btn" onclick="resumeCourse()">▶ 課題を進める</button>
+    <button class="btn dk" onclick="navTo('rank')">☰ 目標のランクを確認する</button>
+  </div>
+
+  <!-- Lv.1 課題説明 -->
+  <div id="s-lv1-start" class="screen hidden">
+    <div style="display:flex;gap:7px;margin-bottom:2px;">
+      <span style="font-size:11px;font-weight:600;padding:4px 11px;border-radius:20px;background:var(--or);color:#fff;">Lv.1</span>
+      <span style="font-size:11px;font-weight:600;padding:4px 11px;border-radius:20px;background:var(--dk);color:#fff;">知識 E</span>
+    </div>
+    <div class="mc">
+      <div class="ml">ランク1 課題</div>
+      <div class="mt">デッサン人形<br>6サイズ撮影</div>
+      <div class="mm">期間 7〜10日 • 屋内・屋外</div>
+    </div>
+    <div style="font-size:13px;color:var(--mid);line-height:1.7;">撮影ルールを確認して、スタートしてください。</div>
+    <button class="btn" style="margin-top:auto;" onclick="goScreen('s-lv1-rule','s-lv1-start')">課題をスタートする →</button>
+  </div>
+
+  <!-- Lv.1 撮影ルール -->
+  <div id="s-lv1-rule" class="screen hidden">
+    <div style="background:var(--or);margin:-20px -18px 0;padding:18px 18px 14px;">
+      <div style="font-size:10px;font-weight:600;color:rgba(255,255,255,.7);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;">Rank 1 — 撮影前に確認</div>
+      <div style="font-size:20px;font-weight:700;color:#fff;">必ず守ること</div>
+    </div>
+    <div class="rb"><div class="rbt">SS</div>
+      <div class="rr"><div class="rd"></div><div class="rtx"><strong>1/50</strong> または <strong>1/100</strong> のみ</div></div>
+      <div class="rr"><div class="rd g"></div><div class="rtx rwn">それ以外はNG</div></div>
+    </div>
+    <div class="rb"><div class="rbt">絞り</div>
+      <div class="rr"><div class="rd g"></div><div class="rtx rwn">開放NG — 必ず少し絞る</div></div>
+    </div>
+    <div class="rb"><div class="rbt">ISO</div>
+      <div class="rr"><div class="rd"></div><div class="rtx">できるだけ低く抑える</div></div>
+    </div>
+    <button class="btn" style="margin-top:auto;" onclick="goScreen('s-lv1-size','s-lv1-rule')">理解した、始める →</button>
+  </div>
+
+  <!-- Lv.1 6サイズガイド -->
+  <div id="s-lv1-size" class="screen hidden">
+    <div style="font-size:13px;color:var(--mid);line-height:1.7;">屋内・屋外でフルショットからクローズアップまで撮影します。</div>
+    <div class="sg">
+      <div class="sgi">フルショット<span>全身</span></div>
+      <div class="sgi">ニー<span>膝上</span></div>
+      <div class="sgi">ウエスト<span>腰上</span></div>
+      <div class="sgi">バスト<span>胸上</span></div>
+      <div class="sgi">アップ<span>顔</span></div>
+      <div class="sgi">クローズアップ<span>部分拡大</span></div>
+    </div>
+    <div class="rb"><div class="rbt">シチュエーション例</div>
+      <div class="rr"><div class="rd"></div><div class="rtx">屋内：窓際、暗い部屋、テーブル上</div></div>
+      <div class="rr"><div class="rd"></div><div class="rtx">屋外：日向、日陰、夕方の光</div></div>
+    </div>
+    <div style="background:var(--dk);border-radius:11px;padding:12px 14px;font-size:12px;color:rgba(255,255,255,.85);line-height:1.7;">少し<strong style="color:var(--or);">暗い場所</strong>、<strong style="color:var(--or);">明るい場所</strong>、<strong style="color:var(--or);">陰影のある場所</strong>で、焦点距離も変えながら試しましょう。</div>
+    <button class="btn" style="margin-top:auto;" onclick="goScreen('s-lv1-daily','s-lv1-size');initLv1Daily();">チェックを開始する →</button>
+  </div>
+
+  <!-- Lv.1 今日のチェック -->
+  <div id="s-lv1-daily" class="screen hidden">
+    <div style="background:var(--soft);border-radius:11px;padding:11px 13px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span class="eyb">進捗</span><span style="font-size:11px;font-weight:600;color:var(--dk);" id="lv1-days-txt">0日撮影済み</span></div>
+      <div class="pb"><div class="pf" id="lv1-prog" style="width:0%;"></div></div>
+      <div class="ddots" id="lv1-dots"></div>
+    </div>
+    <div class="rule-tog" onclick="togglePanel('lv1-rule-panel','lv1-rule-arrow')">
+      <span style="font-size:13px;color:var(--mid);">撮影ルールを確認する</span>
+      <span id="lv1-rule-arrow" style="font-size:12px;color:var(--or);font-weight:600;">▼</span>
+    </div>
+    <div id="lv1-rule-panel" style="display:none;">
+      <div class="rb" style="margin-top:-6px;">
+        <div class="rr"><div class="rd"></div><div class="rtx">SS：1/50 または 1/100</div></div>
+        <div class="rr"><div class="rd g"></div><div class="rtx rwn">絞り開放 NG</div></div>
+        <div class="rr"><div class="rd"></div><div class="rtx">ISO：低く抑える</div></div>
+      </div>
+    </div>
+    <div class="eyb">今日できたこと</div>
+    <div class="chk-grid" id="lv1-checks"></div>
+    <button class="btn" id="lv1-save-btn" onclick="saveLv1Daily()" disabled style="margin-top:auto;">今日のチェックを保存</button>
+  </div>
+
+  <!-- Lv.1 提出 -->
+  <div id="s-lv1-submit" class="screen hidden">
+    <div style="background:var(--or);border-radius:14px;padding:16px;text-align:center;">
+      <div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px;">5日分の撮影が完了！</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.8);">動画1本にまとめてChatWorkで提出してください</div>
+    </div>
+    <div class="div"></div>
+    <div class="eyb">提出ステータス</div>
+    <div>
+      <div class="ss-row"><div class="ss-lw"><div class="ss-c done">✓</div><div class="ss-vl"></div></div><div><div class="ss-t">撮影完了</div><div class="ss-s">5日分チェック済み</div></div></div>
+      <div class="ss-row"><div class="ss-lw"><div class="ss-c act">→</div><div class="ss-vl"></div></div><div><div class="ss-t">動画を提出中</div><div class="ss-s">ChatWorkで送付してください</div></div></div>
+      <div class="ss-row"><div class="ss-lw"><div class="ss-c emp"></div><div class="ss-vl"></div></div><div><div class="ss-t dim">講師チェック待ち</div><div class="ss-s dim">フィードバックはChatWork</div></div></div>
+      <div class="ss-row"><div class="ss-lw"><div class="ss-c emp"></div></div><div><div class="ss-t dim">ランク審査へ</div><div class="ss-s dim">確認済みで進む</div></div></div>
+    </div>
+    <button class="btn dk" onclick="markSubmitted(1)" style="margin-top:auto;">提出済みにする</button>
+  </div>
+
+  <!-- Lv.3 課題説明 -->
+  <div id="s-lv3-start" class="screen hidden">
+    <div style="display:flex;gap:7px;margin-bottom:2px;">
+      <span style="font-size:11px;font-weight:600;padding:4px 11px;border-radius:20px;background:var(--or);color:#fff;">Lv.3</span>
+    </div>
+    <div class="mc">
+      <div class="ml">ランク3 課題</div>
+      <div class="mt">インタビュー動画<br>の作成</div>
+      <div class="mm">11ステップ • 順番に進める</div>
+    </div>
+    <div style="font-size:13px;color:var(--mid);line-height:1.7;">打ち合わせから完パケまで、インタビュー動画制作の全工程を経験します。</div>
+    <button class="btn" style="margin-top:auto;" onclick="goScreen('s-lv3-steps','s-lv3-start')">課題をスタートする →</button>
+  </div>
+
+  <!-- Lv.3 ステップ一覧 -->
+  <div id="s-lv3-steps" class="screen hidden">
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div class="eyb">進捗</div>
+        <div style="font-size:11px;color:var(--or);font-weight:600;" id="lv3-prog-label">0 / 9 完了</div>
+      </div>
+      <div class="pb"><div class="pf" id="lv3-prog" style="width:0%;"></div></div>
+    </div>
+    <div class="step-list" id="lv3-step-list"></div>
+    <button class="btn" id="lv3-complete-btn" onclick="goScreen('s-lv3-submit','s-lv3-steps')" disabled style="margin-top:auto;">提出画面へ →</button>
+  </div>
+
+  <!-- Lv.3 提出 -->
+  <div id="s-lv3-submit" class="screen hidden">
+    <div style="background:var(--or);border-radius:14px;padding:16px;text-align:center;">
+      <div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px;">全11ステップ完了！</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.8);">完パケ動画をChatWorkで提出してください</div>
+    </div>
+    <div class="div"></div>
+    <div class="eyb">提出ステータス</div>
+    <div>
+      <div class="ss-row"><div class="ss-lw"><div class="ss-c done">✓</div><div class="ss-vl"></div></div><div><div class="ss-t">全工程完了</div><div class="ss-s">11ステップ済み</div></div></div>
+      <div class="ss-row"><div class="ss-lw"><div class="ss-c act">→</div><div class="ss-vl"></div></div><div><div class="ss-t">動画を提出中</div><div class="ss-s">ChatWorkで送付してください</div></div></div>
+      <div class="ss-row"><div class="ss-lw"><div class="ss-c emp"></div><div class="ss-vl"></div></div><div><div class="ss-t dim">講師チェック待ち</div><div class="ss-s dim">フィードバックはChatWork</div></div></div>
+      <div class="ss-row"><div class="ss-lw"><div class="ss-c emp"></div></div><div><div class="ss-t dim">ランク審査へ</div><div class="ss-s dim">確認済みで進む</div></div></div>
+    </div>
+    <button class="btn dk" onclick="markSubmitted(3)" style="margin-top:auto;">提出済みにする</button>
+  </div>
+
+  <!-- 提出済み共通 -->
+  <div id="s-submitted" class="screen hidden">
+    <div style="background:var(--soft);border-radius:14px;padding:28px 18px;text-align:center;margin-top:20px;">
+      <div style="font-size:40px;">⏳</div>
+      <div style="font-size:16px;font-weight:500;color:var(--dk);margin-top:14px;">講師チェック待ち</div>
+      <div style="font-size:12px;color:var(--mid);margin-top:6px;line-height:1.8;">フィードバックはChatWorkで届きます。<br>認定後にランクが更新されます。</div>
+    </div>
+    <button class="btn ghost" onclick="navTo('home')" style="margin-top:auto;">ホームに戻る</button>
+  </div>
+
+  <!-- テスト通知 -->
+  <div id="s-notif" class="screen hidden">
+    <div style="background:var(--dk);border-radius:14px;padding:14px;display:flex;gap:12px;align-items:flex-start;">
+      <div style="width:36px;height:36px;background:var(--or);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;">📋</div>
+      <div><div style="font-size:14px;font-weight:500;color:#fff;margin-bottom:3px;">今週の知識テスト</div><div style="font-size:11px;color:rgba(255,255,255,.5);">日曜 23:59 まで受験してください</div></div>
+    </div>
+    <div class="div"></div>
+    <div class="eyb">今週のタスク達成</div>
+    <div><div class="pb"><div class="pf" style="width:85%;"></div></div><div class="pm"><span>6 / 7日</span><span>85%</span></div></div>
+    <button class="btn" onclick="startTest()">テストを受ける</button>
+    <button class="btn ghost" onclick="navTo('home')" style="margin-top:0;">あとで受ける</button>
+  </div>
+
+  <!-- テスト -->
+  <div id="s-test" class="screen hidden">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:11px;font-weight:600;padding:4px 11px;border-radius:20px;background:var(--dk);color:#fff;">現在 E</span>
+      <span style="font-size:11px;color:var(--mid);" id="q-prog-txt">問1 / 5</span>
+    </div>
+    <div class="pb"><div class="pf" id="q-prog-bar" style="width:20%;"></div></div>
+    <div class="qcard" id="q-text"></div>
+    <div style="display:flex;flex-direction:column;gap:8px;" id="q-opts"></div>
+    <button class="btn" id="q-next-btn" onclick="nextQ()" disabled style="margin-top:auto;">次へ →</button>
+  </div>
+
+  <!-- テスト結果 -->
+  <div id="s-result" class="screen hidden">
+    <div style="padding:10px 0;text-align:center;">
+      <div class="result-num" id="result-score">80</div>
+      <div class="result-lbl">今週のスコア</div>
+    </div>
+    <div class="level-up" id="result-msg"></div>
+    <div class="div"></div>
+    <div style="display:flex;flex-direction:column;gap:9px;">
+      <div class="ti"><div class="chkd"></div><span class="tt" id="result-correct-txt">正解 4問 / 5問</span></div>
+      <div class="ti"><div class="chkd"></div><span class="tt">タスク達成率 85%</span></div>
+    </div>
+    <button class="btn dk" onclick="navTo('home')" style="margin-top:auto;">ホームに戻る</button>
+  </div>
+
+  <!-- ランク一覧 -->
+  <div id="s-rank" class="screen hidden">
+    <div style="font-size:15px;font-weight:500;color:var(--dk);">ランク 1 〜 10</div>
+    <div style="font-size:12px;color:var(--mid);margin-bottom:4px;" id="rank-subtitle">現在 Lv.1。次の目標を確認しよう。</div>
+    <div id="rank-list"></div>
+  </div>
+
+  <div class="nav" id="bottomnav" style="display:none;">
+    <div class="nav-item active" id="nav-home" onclick="navTo('home')">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>ホーム</span>
+    </div>
+    <div class="nav-item" id="nav-notif" onclick="navTo('notif')">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg><span>テスト</span>
+    </div>
+    <div class="nav-item" id="nav-rank" onclick="navTo('rank')">
+      <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>ランク</span>
+    </div>
+  </div>
+</div>
+
+<script>
+const RANK_DATA=[
+  {lv:1,title:'人物6サイズを適切に撮影できる'},
+  {lv:2,title:'AEの操作初級をクリア'},
+  {lv:3,title:'インタビュー動画を2本制作完了'},
+  {lv:4,title:'短いアニメーション動画を制作完了'},
+  {lv:5,title:'プロモーション動画を制作完了'},
+  {lv:6,title:'5万円以上の予算を獲得し制作完了'},
+  {lv:7,title:'10万円以上の予算を獲得し制作完了'},
+  {lv:8,title:'20万円以上の予算を獲得し制作完了'},
+  {lv:9,title:'オフィシャルサイトを制作完了'},
+  {lv:10,title:'ワンオペの卒業 & 講師認定'},
+];
+const LV1_CHECKS=['暗い場所で撮影','明るい場所で撮影','屋外で撮影','屋内で撮影','広角で撮影','望遠で撮影'];
+const LV3_STEPS=['制作先の声かけ','制作先決定','打ち合わせと深堀り','構成作成','インタビュー原稿作成','OP & ローワーサードデザイン','撮影準備 & 制作','撮影','粗編集','アニメーション編集','完パケ'];
+const QUESTIONS=[
+  {q:'シャッタースピードを上げると映像はどうなる？',opts:['動きがぼける','動きがくっきりする','明るくなる','色が変わる'],ans:1},
+  {q:'絞りを開放にすると何が起きる？',opts:['背景がぼける','被写体が消える','暗くなる','ノイズが増える'],ans:0},
+  {q:'ISOを上げすぎると映像にどんな影響がある？',opts:['色が変わる','ノイズが増える','ピントが合わない','音がずれる'],ans:1},
+  {q:'「ニーショット」とはどの範囲を指す？',opts:['全身','膝上','顔のみ','腰上'],ans:1},
+  {q:'フォーカスを意図的に合わせない表現を何という？',opts:['パン','ズームアウト','アウトフォーカス','カットイン'],ans:2},
+];
+
+let state={name:'',date:'',currentLevel:1,lv1:{daysShot:0,submitted:false},lv3:{stepsCompleted:0,submitted:false}};
+let lv1Checked=[];
+let currentQ=0,correctCount=0,answered=false;
+let historyStack=[];
+
+function loadState(){const s=localStorage.getItem('daha_v2');if(s)state=JSON.parse(s);}
+function saveState(){localStorage.setItem('daha_v2',JSON.stringify(state));}
+
+function doStart(){
+  const n=document.getElementById('input-name').value.trim();
+  const d=document.getElementById('input-date').value;
+  if(!n||!d)return;
+  state.name=n;state.date=d;state.currentLevel=1;
+  state.lv1={daysShot:0,submitted:false};
+  state.lv3={stepsCompleted:0,submitted:false};
+  saveState();applyHome();
+  goScreen('s-lv1-start',null);
+}
+
+function applyHome(){
+  document.getElementById('home-name').textContent=state.name;
+  const dt=new Date(state.date+'T00:00:00');
+  const wd=['日','月','火','水','木','金','土'];
+  document.getElementById('home-date').textContent=dt.getFullYear()+'年'+(dt.getMonth()+1)+'月'+dt.getDate()+'日（'+wd[dt.getDay()]+'）';
+  document.getElementById('home-lv').textContent='Lv.'+state.currentLevel;
+  const lv=state.currentLevel;
+  if(lv===1){
+    const d=state.lv1.daysShot,pct=Math.round(d/10*100);
+    document.getElementById('home-prog').style.width=pct+'%';
+    document.getElementById('home-prog-txt').textContent=d+' / 10日';
+    document.getElementById('home-prog-pct').textContent=pct+'%';
+    document.getElementById('home-progress-label').textContent=d+'日撮影済み';
+  } else if(lv===3){
+    const s=state.lv3.stepsCompleted,pct=Math.round(s/11*100);
+    document.getElementById('home-prog').style.width=pct+'%';
+    document.getElementById('home-prog-txt').textContent=s+' / 11ステップ';
+    document.getElementById('home-prog-pct').textContent=pct+'%';
+    document.getElementById('home-progress-label').textContent=s+'ステップ完了';
+  }
+}
+
+function resumeCourse(){
+  const lv=state.currentLevel;
+  if(lv===1){
+    if(state.lv1.submitted){goScreen('s-submitted',null);return;}
+    if(state.lv1.daysShot>=5){goScreen('s-lv1-submit','s-home');return;}
+    initLv1Daily();goScreen('s-lv1-daily','s-home');
+  } else if(lv===3){
+    if(state.lv3.submitted){goScreen('s-submitted',null);return;}
+    if(state.lv3.stepsCompleted>=11){goScreen('s-lv3-submit','s-home');return;}
+    buildLv3Steps();goScreen('s-lv3-steps','s-home');
+  }
+}
+
+// Lv1
+function initLv1Daily(){
+  lv1Checked=new Array(6).fill(false);
+  const el=document.getElementById('lv1-checks');el.innerHTML='';
+  LV1_CHECKS.forEach((t,i)=>{
+    el.innerHTML+=`<div class="ci" id="lv1ci-${i}" onclick="toggleLv1(${i})"><div class="cb"></div><span class="ct">${t}</span></div>`;
+  });
+  document.getElementById('lv1-save-btn').disabled=true;
+  buildLv1Dots();
+}
+function toggleLv1(i){
+  lv1Checked[i]=!lv1Checked[i];
+  document.getElementById('lv1ci-'+i).classList.toggle('on',lv1Checked[i]);
+  document.getElementById('lv1-save-btn').disabled=lv1Checked.filter(Boolean).length===0;
+}
+function buildLv1Dots(){
+  const el=document.getElementById('lv1-dots');el.innerHTML='';
+  const d=state.lv1.daysShot;
+  document.getElementById('lv1-days-txt').textContent=d+'日撮影済み';
+  document.getElementById('lv1-prog').style.width=Math.round(d/10*100)+'%';
+  for(let i=0;i<10;i++){
+    const cls=i<d?'done':i===d?'today':'emp';
+    el.innerHTML+=`<div class="dd ${cls}">${i+1}</div>`;
+  }
+}
+function saveLv1Daily(){
+  state.lv1.daysShot=Math.min(state.lv1.daysShot+1,10);
+  saveState();applyHome();
+  if(state.lv1.daysShot>=5){goScreen('s-lv1-submit',null);}
+  else{navTo('home');}
+}
+
+// Lv3
+function buildLv3Steps(){
+  const done=state.lv3.stepsCompleted;
+  const el=document.getElementById('lv3-step-list');el.innerHTML='';
+  const pct=Math.round(done/11*100);
+  document.getElementById('lv3-prog').style.width=pct+'%';
+  document.getElementById('lv3-prog-label').textContent=done+' / 11 完了';
+  LV3_STEPS.forEach((s,i)=>{
+    const isDone=i<done,isActive=i===done;
+    const cls='step-item'+(isDone?' done-s':isActive?' active-s':' locked');
+    const onclick=isActive?`onclick="completeStep(${i})"`:isDone?`onclick="uncompleteStep(${i})"`:''
+    el.innerHTML+=`<div class="${cls}" ${onclick}>
+      <div class="step-num">${isDone?'✓':i+1}</div>
+      <span class="step-txt">${s}</span>
+      ${isActive?'<span style="font-size:11px;color:var(--or);font-weight:600;">完了 →</span>':''}
+    </div>`;
+  });
+  document.getElementById('lv3-complete-btn').disabled=done<11;
+}
+function completeStep(i){
+  if(i===state.lv3.stepsCompleted){
+    state.lv3.stepsCompleted=Math.min(i+1,11);
+    saveState();applyHome();buildLv3Steps();
+    if(state.lv3.stepsCompleted>=11){goScreen('s-lv3-submit',null);}
+  }
+}
+function uncompleteStep(i){
+  if(i===state.lv3.stepsCompleted-1){
+    state.lv3.stepsCompleted=Math.max(i,0);
+    saveState();applyHome();buildLv3Steps();
+  }
+}
+
+function markSubmitted(lv){
+  if(lv===1)state.lv1.submitted=true;
+  if(lv===3)state.lv3.submitted=true;
+  saveState();
+  goScreen('s-submitted',null);
+}
+
+function togglePanel(panelId,arrowId){
+  const p=document.getElementById(panelId);
+  const open=p.style.display==='none';
+  p.style.display=open?'block':'none';
+  document.getElementById(arrowId).textContent=open?'▲':'▼';
+}
+
+function buildRankList(){
+  const el=document.getElementById('rank-list');el.innerHTML='';
+  const lv=state.currentLevel||1;
+  document.getElementById('rank-subtitle').textContent='現在 Lv.'+lv+'。次の目標を確認しよう。';
+  RANK_DATA.forEach(r=>{
+    const cur=r.lv===lv,cmp=r.lv<lv;
+    const cls='rl-item'+(cur?' cur':cmp?' cmp':'');
+    const tag=cur?'<span class="rl-tag">現在</span>':cmp?'<span class="rl-tag">完了</span>':'<span class="rl-tag emp">未達成</span>';
+    el.innerHTML+=`<div class="${cls}"><div class="rl-lv">Lv.${r.lv}</div><div style="flex:1;"><div class="rl-title">${r.title}</div></div>${tag}</div>`;
+  });
+}
+
+function startTest(){currentQ=0;correctCount=0;answered=false;renderQ();goScreen('s-test','s-notif');}
+function renderQ(){
+  const q=QUESTIONS[currentQ];
+  document.getElementById('q-prog-txt').textContent='問'+(currentQ+1)+' / '+QUESTIONS.length;
+  document.getElementById('q-prog-bar').style.width=Math.round((currentQ+1)/QUESTIONS.length*100)+'%';
+  document.getElementById('q-text').textContent=q.q;
+  const el=document.getElementById('q-opts');el.innerHTML='';
+  q.opts.forEach((o,i)=>{el.innerHTML+=`<div class="opt" id="opt-${i}" onclick="selectOpt(${i})">${o}</div>`;});
+  answered=false;
+  const nb=document.getElementById('q-next-btn');
+  nb.disabled=true;nb.textContent=currentQ<QUESTIONS.length-1?'次へ →':'結果を見る';
+}
+function selectOpt(i){
+  if(answered)return;answered=true;
+  const q=QUESTIONS[currentQ];
+  document.querySelectorAll('.opt').forEach((el,idx)=>{
+    if(idx===q.ans)el.classList.add('correct');
+    else if(idx===i&&i!==q.ans)el.classList.add('wrong');
+  });
+  if(i===q.ans)correctCount++;
+  document.getElementById('q-next-btn').disabled=false;
+}
+function nextQ(){
+  if(currentQ<QUESTIONS.length-1){currentQ++;renderQ();}
+  else{
+    const score=Math.round(correctCount/QUESTIONS.length*100);
+    document.getElementById('result-score').textContent=score;
+    document.getElementById('result-correct-txt').textContent='正解 '+correctCount+'問 / '+QUESTIONS.length+'問';
+    document.getElementById('result-msg').innerHTML=score>=60
+      ?'知識レベル E → <strong style="color:var(--or);">D</strong> にアップ！'
+      :'知識レベル E をキープ。次回また挑戦しよう！';
+    goScreen('s-result',null);
+  }
+}
+
+const SCREEN_TITLES={
+  's-lv1-start':'ランク1 課題','s-lv1-rule':'撮影ルール確認','s-lv1-size':'6サイズガイド',
+  's-lv1-daily':'今日のチェック','s-lv1-submit':'課題を提出する',
+  's-lv3-start':'ランク3 課題','s-lv3-steps':'インタビュー動画制作','s-lv3-submit':'課題を提出する',
+  's-submitted':'提出済み','s-notif':'通知','s-test':'知識テスト','s-result':'テスト結果','s-rank':'ランク一覧',
+};
+const NAV_SCREENS=['s-home','s-rank','s-notif','s-result','s-submitted'];
+
+function goScreen(id,prevId){
+  if(prevId)historyStack.push(prevId);
+  else if(id==='s-home'||id==='s-start')historyStack=[];
+  document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  renderBar(id);
+  document.getElementById('bottomnav').style.display=NAV_SCREENS.includes(id)?'flex':'none';
+  window.scrollTo(0,0);
+}
+function renderBar(id){
+  const bar=document.getElementById('topbar');
+  const title=SCREEN_TITLES[id];
+  const canBack=historyStack.length>0&&id!=='s-home'&&id!=='s-start';
+  if(!title){bar.innerHTML=`<div class="dbar-logo">DAHA.<small>PROGRAM</small></div><div class="dbar-dot"></div>`;}
+  else if(canBack){bar.innerHTML=`<span class="dbar-back" onclick="goBack()">‹</span><div class="dbar-title">${title}</div><div class="dbar-dot"></div>`;}
+  else{bar.innerHTML=`<div class="dbar-title">${title}</div><div class="dbar-dot"></div>`;}
+}
+function goBack(){
+  if(!historyStack.length)return;
+  const prev=historyStack.pop();
+  document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+  document.getElementById(prev).classList.remove('hidden');
+  renderBar(prev);
+  document.getElementById('bottomnav').style.display=NAV_SCREENS.includes(prev)?'flex':'none';
+  window.scrollTo(0,0);
+}
+function navTo(key){
+  const map={home:'s-home',notif:'s-notif',rank:'s-rank'};
+  const nm={home:'nav-home',notif:'nav-notif',rank:'nav-rank'};
+  if(key==='rank')buildRankList();
+  historyStack=[];
+  goScreen(map[key],null);
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(nm[key]).classList.add('active');
+}
+
+loadState();
+if(state.name&&state.date){
+  applyHome();
+  goScreen('s-home',null);
+  document.getElementById('bottomnav').style.display='flex';
+} else {
+  goScreen('s-start',null);
+}
+</script>
+</body>
+</html>
