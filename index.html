@@ -163,7 +163,7 @@ input[type=text]:focus,input[type=date]:focus{border-color:var(--or);}
       <div class="pm"><span id="home-prog-txt"></span><span id="home-prog-pct"></span></div>
     </div>
     <div class="div"></div>
-    <button class="btn" onclick="resumeCourse()">▶ 課題を始める</button>
+    <button class="btn" id="home-main-btn" onclick="resumeCourse()">▶ 課題を始める</button>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
       <button class="btn ghost" style="font-size:13px;padding:11px;" onclick="goLv(2)">Lv.2の課題へ</button>
       <button class="btn ghost" style="font-size:13px;padding:11px;" onclick="goLv(3)">Lv.3の課題へ</button>
@@ -319,13 +319,13 @@ input[type=text]:focus,input[type=date]:focus{border-color:var(--or);}
   <!-- Lv.1 提出 -->
   <div id="s-lv1-submit" class="screen hidden">
     <div style="background:var(--or);border-radius:14px;padding:16px;text-align:center;">
-      <div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px;">5日分の撮影が完了！</div>
+      <div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px;">全10回の撮影が完了！</div>
       <div style="font-size:12px;color:rgba(255,255,255,.8);">動画1本にまとめてChatWorkで提出してください</div>
     </div>
     <div class="div"></div>
     <div class="eyb">提出ステータス</div>
     <div>
-      <div class="ss-row"><div class="ss-lw"><div class="ss-c done">✓</div><div class="ss-vl"></div></div><div><div class="ss-t">撮影完了</div><div class="ss-s">5日分チェック済み</div></div></div>
+      <div class="ss-row"><div class="ss-lw"><div class="ss-c done">✓</div><div class="ss-vl"></div></div><div><div class="ss-t">撮影完了</div><div class="ss-s">全10回チェック済み（人形5・再トライ3・人物2）</div></div></div>
       <div class="ss-row"><div class="ss-lw"><div class="ss-c act">→</div><div class="ss-vl"></div></div><div><div class="ss-t">動画を提出中</div><div class="ss-s">ChatWorkで送付してください</div></div></div>
       <div class="ss-row"><div class="ss-lw"><div class="ss-c emp"></div><div class="ss-vl"></div></div><div><div class="ss-t dim">講師チェック待ち</div><div class="ss-s dim">フィードバックはChatWork</div></div></div>
       <div class="ss-row"><div class="ss-lw"><div class="ss-c emp"></div></div><div><div class="ss-t dim">ランク審査へ</div><div class="ss-s dim">確認済みで進む</div></div></div>
@@ -341,7 +341,7 @@ input[type=text]:focus,input[type=date]:focus{border-color:var(--or);}
     <div class="mc">
       <div class="ml">ランク3 課題</div>
       <div class="mt">インタビュー動画<br>の作成</div>
-      <div class="mm">11ステップ • 順番に進める</div>
+      <div class="mm">2本制作 • 全22ステップ</div>
     </div>
     <div style="font-size:13px;color:var(--mid);line-height:1.7;">打ち合わせから完パケまで、インタビュー動画制作の全工程を経験します。</div>
     <button class="btn" style="margin-top:auto;" onclick="goScreen('s-lv3-steps','s-lv3-start')">課題をスタートする →</button>
@@ -363,13 +363,13 @@ input[type=text]:focus,input[type=date]:focus{border-color:var(--or);}
   <!-- Lv.3 提出 -->
   <div id="s-lv3-submit" class="screen hidden">
     <div style="background:var(--or);border-radius:14px;padding:16px;text-align:center;">
-      <div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px;">全11ステップ完了！</div>
-      <div style="font-size:12px;color:rgba(255,255,255,.8);">完パケ動画をChatWorkで提出してください</div>
+      <div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:4px;">インタビュー動画 2本完成！</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.8);">完パケ動画2本をChatWorkで提出してください</div>
     </div>
     <div class="div"></div>
     <div class="eyb">提出ステータス</div>
     <div>
-      <div class="ss-row"><div class="ss-lw"><div class="ss-c done">✓</div><div class="ss-vl"></div></div><div><div class="ss-t">全工程完了</div><div class="ss-s">11ステップ済み</div></div></div>
+      <div class="ss-row"><div class="ss-lw"><div class="ss-c done">✓</div><div class="ss-vl"></div></div><div><div class="ss-t">全工程完了</div><div class="ss-s">2本 × 11ステップ済み</div></div></div>
       <div class="ss-row"><div class="ss-lw"><div class="ss-c act">→</div><div class="ss-vl"></div></div><div><div class="ss-t">動画を提出中</div><div class="ss-s">ChatWorkで送付してください</div></div></div>
       <div class="ss-row"><div class="ss-lw"><div class="ss-c emp"></div><div class="ss-vl"></div></div><div><div class="ss-t dim">講師チェック待ち</div><div class="ss-s dim">フィードバックはChatWork</div></div></div>
       <div class="ss-row"><div class="ss-lw"><div class="ss-c emp"></div></div><div><div class="ss-t dim">ランク審査へ</div><div class="ss-s dim">確認済みで進む</div></div></div>
@@ -462,7 +462,9 @@ const RANK_DATA=[
 ];
 const LV1_CHECKS=['暗い場所で撮影','明るい場所で撮影','屋外で撮影','屋内で撮影','広角で撮影','望遠で撮影'];
 const LV2_STEPS=['トランジション','テキストモーション','シェイプエフェクト','キャラクターアニメーション','パスのトリミング','グラフエディター','緩急'];
-const LV3_STEPS=['制作先の声かけ','制作先決定','打ち合わせと深堀り','構成作成','インタビュー原稿作成','OP & ローワーサードデザイン','撮影準備 & 制作','撮影','粗編集','アニメーション編集','完パケ'];
+const LV3_STEPS_1=['制作先の声かけ','制作先決定','打ち合わせと深堀り','構成作成','インタビュー原稿作成','OP & ローワーサードデザイン','撮影準備 & 制作','撮影','粗編集','アニメーション編集','完パケ'];
+const LV3_STEPS_2=['【2本目】制作先の声かけ','【2本目】制作先決定','【2本目】打ち合わせと深堀り','【2本目】構成作成','【2本目】インタビュー原稿作成','【2本目】OP & ローワーサードデザイン','【2本目】撮影準備 & 制作','【2本目】撮影','【2本目】粗編集','【2本目】アニメーション編集','【2本目】完パケ'];
+const LV3_STEPS=[...LV3_STEPS_1,...LV3_STEPS_2];
 const QUESTIONS=[
   {q:'シャッタースピードを上げると映像はどうなる？',opts:['動きがぼける','動きがくっきりする','明るくなる','色が変わる'],ans:1},
   {q:'絞りを開放にすると何が起きる？',opts:['背景がぼける','被写体が消える','暗くなる','ノイズが増える'],ans:0},
@@ -497,6 +499,12 @@ function applyHome(){
   const wd=['日','月','火','水','木','金','土'];
   document.getElementById('home-date').textContent=dt.getFullYear()+'年'+(dt.getMonth()+1)+'月'+dt.getDate()+'日（'+wd[dt.getDay()]+'）';
   document.getElementById('home-lv').textContent='Lv.'+state.currentLevel;
+  const mainBtn=document.getElementById('home-main-btn');
+  if(mainBtn){
+    const pd=state.lv1?state.lv1.phaseDays||[0,0,0]:[0,0,0];
+    const started=pd[0]>0||pd[1]>0||pd[2]>0;
+    mainBtn.textContent=started?'▶ 課題を進める':'▶ 課題を始める';
+  }
   const lv=state.currentLevel;
   if(lv===1){
     const pd=state.lv1.phaseDays||[0,0,0];
@@ -514,9 +522,9 @@ function applyHome(){
     if(state.lv2.stepsCompleted>=7){goScreen('s-lv2-submit','s-home');return;}
     buildLv2Steps();goScreen('s-lv2-steps','s-home');
   } else if(lv===3){
-    const s=state.lv3.stepsCompleted,pct=Math.round(s/11*100);
+    const s=state.lv3.stepsCompleted,pct=Math.round(s/22*100);
     document.getElementById('home-prog').style.width=pct+'%';
-    document.getElementById('home-prog-txt').textContent=s+' / 11ステップ';
+    document.getElementById('home-prog-txt').textContent=s+' / 22ステップ';
     document.getElementById('home-prog-pct').textContent=pct+'%';
     document.getElementById('home-progress-label').textContent=s+'ステップ完了';
   }
@@ -536,7 +544,7 @@ function resumeCourse(){
     buildLv2Steps();goScreen('s-lv2-steps','s-home');
   } else if(lv===3){
     if(state.lv3.submitted){goScreen('s-submitted',null);return;}
-    if(state.lv3.stepsCompleted>=11){goScreen('s-lv3-submit','s-home');return;}
+    if(state.lv3.stepsCompleted>=22){goScreen('s-lv3-submit','s-home');return;}
     buildLv3Steps();goScreen('s-lv3-steps','s-home');
   }
 }
@@ -603,9 +611,9 @@ function saveLv1Daily(){
 function buildLv3Steps(){
   const done=state.lv3.stepsCompleted;
   const el=document.getElementById('lv3-step-list');el.innerHTML='';
-  const pct=Math.round(done/11*100);
+  const pct=Math.round(done/22*100);
   document.getElementById('lv3-prog').style.width=pct+'%';
-  document.getElementById('lv3-prog-label').textContent=done+' / 11 完了';
+  document.getElementById('lv3-prog-label').textContent=done+' / 22 完了 ('+(done<11?'1本目':'2本目')+')';
   LV3_STEPS.forEach((s,i)=>{
     const isDone=i<done,isActive=i===done;
     const cls='step-item'+(isDone?' done-s':isActive?' active-s':' locked');
@@ -616,13 +624,13 @@ function buildLv3Steps(){
       ${isActive?'<span style="font-size:11px;color:var(--or);font-weight:600;">完了 →</span>':''}
     </div>`;
   });
-  document.getElementById('lv3-complete-btn').disabled=done<11;
+  document.getElementById('lv3-complete-btn').disabled=done<22;
 }
 function completeStep(i){
   if(i===state.lv3.stepsCompleted){
-    state.lv3.stepsCompleted=Math.min(i+1,11);
+    state.lv3.stepsCompleted=Math.min(i+1,22);
     saveState();applyHome();buildLv3Steps();
-    if(state.lv3.stepsCompleted>=11){goScreen('s-lv3-submit',null);}
+    if(state.lv3.stepsCompleted>=22){goScreen('s-lv3-submit',null);}
   }
 }
 function uncompleteStep(i){
