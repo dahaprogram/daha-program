@@ -574,11 +574,15 @@ function doStart(){
   state.lv1={phase:1,phaseDays:[0,0,0],submitted:false};
   state.lv2={stepsCompleted:0,submitted:false};
   state.lv3={stepsCompleted:0,submitted:false};
-  state.lastTestDate=0;
-  state.knowledgeRank='F';
-  state.totalCorrect=0;
+  state.lastTestDate=0;state.knowledgeRank='F';state.totalCorrect=0;
   saveState();
   applyHome();
+  // レベル選択を次回のために再表示
+  const lsel=document.getElementById('level-select');
+  const lselLabel=document.getElementById('level-select-label');
+  if(lsel)lsel.style.display='grid';
+  if(lselLabel)lselLabel.style.display='block';
+  // ホームへ
   document.getElementById('bottomnav').style.display='flex';
   document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
   document.getElementById('s-home').classList.remove('hidden');
@@ -586,11 +590,6 @@ function doStart(){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('nav-home').classList.add('active');
   setTimeout(updateHomeBanner,50);
-  // レベル選択を再表示（次回のため）
-  const lsel=document.getElementById('level-select');
-  const lselLabel=document.getElementById('level-select-label');
-  if(lsel)lsel.style.display='grid';
-  if(lselLabel)lselLabel.style.display='block';
 }
 
 function applyHome(){
@@ -861,15 +860,14 @@ function confirmReset(){
   if(confirm('登録情報と進捗をすべてリセットして最初からはじめます。よろしいですか？')){
     localStorage.removeItem('daha_v2');
     state={name:'',date:'',currentLevel:1,lv1:{phase:1,phaseDays:[0,0,0],submitted:false},lv2:{stepsCompleted:0,submitted:false},lv3:{stepsCompleted:0,submitted:false},lastTestDate:0,knowledgeRank:'F',totalCorrect:0};
-    selectedStartLevel=1;
-    selectLevel(1);
-    selectedStartLevel=1;
-    selectLevel(1);
     document.getElementById('input-name').value='';
     document.getElementById('input-date').value='';
     document.getElementById('bottomnav').style.display='none';
-    document.getElementById('level-select').style.display='none';
-    document.getElementById('level-select-label').style.display='none';
+    // レベル選択を隠す
+    const lsel=document.getElementById('level-select');
+    const lselLabel=document.getElementById('level-select-label');
+    if(lsel)lsel.style.display='none';
+    if(lselLabel)lselLabel.style.display='none';
     document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
     document.getElementById('s-start').classList.remove('hidden');
     document.getElementById('topbar').innerHTML='<div class="dbar-logo">DAHA.<small>PROGRAM</small></div><div class="dbar-dot"></div>';
