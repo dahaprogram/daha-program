@@ -191,13 +191,12 @@ input[type=text]:focus,input[type=date]:focus{border-color:var(--or);}
       </div>
       <div style="font-size:32px;">📋</div>
     </div>
-    <div id="test-banner-locked" style="display:none;background:var(--soft);border-radius:14px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;">
-      <div>
-        <div style="font-size:10px;font-weight:600;color:var(--mid);letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;">知識ミニテスト</div>
-        <div style="font-size:13px;font-weight:500;color:var(--dk);" id="banner-locked-txt">次の受験まで あとN日</div>
+    <div id="test-banner-locked" style="display:none;background:var(--soft);border-radius:10px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-size:13px;font-weight:500;color:var(--mid);">📋 知識ミニテスト</div>
+      <div style="display:flex;align-items:center;gap:8px;">
         <div style="font-size:11px;color:var(--mid);" id="banner-rank-locked-txt">知識ランク F</div>
+        <div style="font-size:11px;color:#bbb;" id="banner-locked-txt">あとN日</div>
       </div>
-      <div style="font-size:28px;opacity:.4;">📋</div>
     </div>
     <div style="margin-top:4px;text-align:center;">
       <span onclick="confirmReset()" style="font-size:14px;color:#999;text-decoration:underline;cursor:pointer;padding:4px 0;display:inline-block;">最初からはじめる</span>
@@ -571,15 +570,22 @@ function doStart(){
   const n=document.getElementById('input-name').value.trim();
   const d=document.getElementById('input-date').value;
   if(!n||!d)return;
-  state.name=n;state.date=d;state.currentLevel=1;
+  state.name=n;state.date=d;state.currentLevel=selectedStartLevel||1;
   state.lv1={phase:1,phaseDays:[0,0,0],submitted:false};
   state.lv2={stepsCompleted:0,submitted:false};
+  state.lv3={stepsCompleted:0,submitted:false};
   state.lastTestDate=0;
   state.knowledgeRank='F';
   state.totalCorrect=0;
-  state.lv3={stepsCompleted:0,submitted:false};
-  saveState();applyHome();
-  goScreen('s-lv1-start',null);
+  saveState();
+  applyHome();
+  document.getElementById('bottomnav').style.display='flex';
+  document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+  document.getElementById('s-home').classList.remove('hidden');
+  document.getElementById('topbar').innerHTML='<div class="dbar-logo">DAHA.<small>PROGRAM</small></div><div class="dbar-dot"></div>';
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('nav-home').classList.add('active');
+  setTimeout(updateHomeBanner,50);
 }
 
 function applyHome(){
@@ -852,10 +858,14 @@ function confirmReset(){
     state={name:'',date:'',currentLevel:1,lv1:{phase:1,phaseDays:[0,0,0],submitted:false},lv2:{stepsCompleted:0,submitted:false},lv3:{stepsCompleted:0,submitted:false},lastTestDate:0,knowledgeRank:'F',totalCorrect:0};
     selectedStartLevel=1;
     selectLevel(1);
-    goScreen('s-start',null);
-    document.getElementById('bottomnav').style.display='none';
+    selectedStartLevel=1;
+    selectLevel(1);
     document.getElementById('input-name').value='';
     document.getElementById('input-date').value='';
+    document.getElementById('bottomnav').style.display='none';
+    document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+    document.getElementById('s-start').classList.remove('hidden');
+    document.getElementById('topbar').innerHTML='<div class="dbar-logo">DAHA.<small>PROGRAM</small></div><div class="dbar-dot"></div>';
   }
 }
 
