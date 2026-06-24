@@ -638,15 +638,22 @@ function resumeCourse(){
     if(state.lv1.submitted){goScreen('s-submitted',null);return;}
     const pd=state.lv1.phaseDays||[0,0,0];
     if(pd[0]>=5&&pd[1]>=3&&pd[2]>=2){goScreen('s-lv1-submit','s-home');return;}
+    // 未着手なら説明画面へ
+    const started=pd[0]>0||pd[1]>0||pd[2]>0;
+    if(!started){goScreen('s-lv1-start','s-home');return;}
     initLv1Daily();goScreen('s-lv1-daily','s-home');
   } else if(lv===2){
     if(!state.lv2)state.lv2={stepsCompleted:0,submitted:false};
     if(state.lv2.submitted){goScreen('s-submitted',null);return;}
     if(state.lv2.stepsCompleted>=7){goScreen('s-lv2-submit','s-home');return;}
+    // 未着手なら説明画面へ
+    if(state.lv2.stepsCompleted===0){goScreen('s-lv2-start','s-home');return;}
     buildLv2Steps();goScreen('s-lv2-steps','s-home');
   } else if(lv===3){
     if(state.lv3.submitted){goScreen('s-submitted',null);return;}
     if(state.lv3.stepsCompleted>=22){goScreen('s-lv3-submit','s-home');return;}
+    // 未着手なら説明画面へ
+    if(state.lv3.stepsCompleted===0){goScreen('s-lv3-start','s-home');return;}
     buildLv3Steps();goScreen('s-lv3-steps','s-home');
   }
 }
