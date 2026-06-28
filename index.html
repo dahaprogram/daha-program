@@ -315,7 +315,7 @@ input[type=text]:focus,input[type=date]:focus{border-color:var(--or);}
       <div style="font-size:10px;font-weight:600;color:var(--or);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px;">チュートリアル内容</div>
       <div style="font-size:12px;color:var(--dk);">01 トランジション　02 テキストモーション　03 シェイプエフェクト　04 キャラクターアニメーション　05 パスのトリミング　06 グラフエディター　07 緩急</div>
     </div>
-    <button class="btn" style="margin-top:auto;" onclick="goScreen('s-lv2-steps','s-lv2-start')">課題をスタートする →</button>
+    <button class="btn" style="margin-top:auto;" onclick="buildLv2Steps();goScreen('s-lv2-steps','s-lv2-start')">課題をスタートする →</button>
   </div>
 
   <!-- Lv.2 ステップ一覧 -->
@@ -376,7 +376,7 @@ input[type=text]:focus,input[type=date]:focus{border-color:var(--or);}
       <div class="mm">2本制作 • 全22ステップ</div>
     </div>
     <div style="font-size:13px;color:var(--mid);line-height:1.7;">打ち合わせから完パケまで、インタビュー動画制作の全工程を経験します。</div>
-    <button class="btn" style="margin-top:auto;" onclick="goScreen('s-lv3-steps','s-lv3-start')">課題をスタートする →</button>
+    <button class="btn" style="margin-top:auto;" onclick="buildLv3Steps();goScreen('s-lv3-steps','s-lv3-start')">課題をスタートする →</button>
   </div>
 
   <!-- Lv.3 ステップ一覧 -->
@@ -522,17 +522,15 @@ const LV3_STEPS_1=['制作先の声かけ','制作先決定','打ち合わせと
 const LV3_STEPS_2=['【2本目】制作先の声かけ','【2本目】制作先決定','【2本目】打ち合わせと深堀り','【2本目】構成作成','【2本目】インタビュー原稿作成','【2本目】OP & ローワーサードデザイン','【2本目】撮影準備 & 制作','【2本目】撮影','【2本目】粗編集','【2本目】アニメーション編集','【2本目】完パケ'];
 const LV3_STEPS=[...LV3_STEPS_1,...LV3_STEPS_2];
 // ========== 知識ミニテスト問題集 ==========
-// type:'multi' → 文全体を表示し空欄を4択で選ぶ
-// type:'input' → 50音タップ入力
 const MINI_QUESTIONS=[
 
   {type:'multi', qnum:'Q1', title:'撮影時の人物サイズ6つを答えよ',
    sentence:'フル → [1] → [2] → [3] → [4] → クローズアップ',
    subs:[
-    {blank:1, opts:['ニー','ロング','ミドル','ショルダー'], ans:0},
-    {blank:2, opts:['ウエスト','チェスト','ミドル','ボディ'], ans:0},
-    {blank:3, opts:['バスト','チェスト','ショルダー','ネック'], ans:0},
-    {blank:4, opts:['アップ','フェイス','ヘッド','クロース'], ans:0},
+    {blank:1, opts:['ロング','ニー','ミドル','ショルダー'], ans:1},
+    {blank:2, opts:['チェスト','ボディ','ウエスト','ミドル'], ans:2},
+    {blank:3, opts:['ショルダー','ネック','チェスト','バスト'], ans:3},
+    {blank:4, opts:['フェイス','アップ','ヘッド','クロース'], ans:1},
    ]},
 
   {type:'input', qnum:'Q2', title:'人物の肩越しに被写体を撮ることを何という？',
@@ -541,36 +539,36 @@ const MINI_QUESTIONS=[
   {type:'multi', qnum:'Q3', title:'照明の色温度について答えよ',
    sentence:'3200Kと4800K。青い（白い）のは[1]。3200Kの色の見た目は[2]。',
    subs:[
-    {blank:1, opts:['4800K','3200K','どちらも同じ','どちらでもない'], ans:0},
-    {blank:2, opts:['オレンジがかった暖色','青白い寒色','緑がかった色','白色'], ans:0},
+    {blank:1, opts:['3200K','どちらも同じ','どちらでもない','4800K'], ans:3},
+    {blank:2, opts:['青白い寒色','緑がかった色','白色','オレンジがかった暖色'], ans:3},
    ]},
 
   {type:'multi', qnum:'Q4', title:'フレームレート（fps）とは何か答えよ',
    sentence:'fpsとは「[1]に[2]の画像で動画が構成されているかを示す数値」。30fpsであれば[3]に[4]枚の静止画が連続して表示される。',
    subs:[
-    {blank:1, opts:['1秒間','1分間','1時間','1フレーム'], ans:0},
-    {blank:2, opts:['何枚','何色','何回','何種類'], ans:0},
-    {blank:3, opts:['1秒間','1分間','1コマ','1時間'], ans:0},
-    {blank:4, opts:['30','24','60','15'], ans:0},
+    {blank:1, opts:['1フレーム','1分間','1時間','1秒間'], ans:3},
+    {blank:2, opts:['何色','何回','何種類','何枚'], ans:3},
+    {blank:3, opts:['1コマ','1分間','1時間','1秒間'], ans:3},
+    {blank:4, opts:['24','60','15','30'], ans:3},
    ]},
 
   {type:'multi', qnum:'Q5', title:'香盤表を作成する際の注意点を答えよ',
    sentence:'[1]前提で作る。キャストの入りタイミングは[2]。撮影シーンの重要度を[3]や[4]で可視化する。',
    subs:[
-    {blank:1, opts:['時間がおしてしまう','時間通りに進む','早く終わる','余裕がある'], ans:0},
-    {blank:2, opts:['早めに','ギリギリに','遅めに','本人任せ'], ans:0},
-    {blank:3, opts:['色','番号','記号','矢印'], ans:0},
-    {blank:4, opts:['文字の大きさ','ページ数','太さ','下線'], ans:0},
+    {blank:1, opts:['時間通りに進む','早く終わる','余裕がある','時間がおしてしまう'], ans:3},
+    {blank:2, opts:['ギリギリに','遅めに','本人任せ','早めに'], ans:3},
+    {blank:3, opts:['番号','記号','矢印','色'], ans:3},
+    {blank:4, opts:['ページ数','太さ','下線','文字の大きさ'], ans:3},
    ]},
 
   {type:'multi', qnum:'Q6', title:'ISO2500/F5.6/SS1/100で暗い。照明なし・レンズF4通し。調整順を答えよ',
    sentence:'まず[1]を[2]に変える。そのあと[3]をあげる。ぎりぎりまで[4]はそのまま。上げすぎると[5]が増える。',
    subs:[
-    {blank:1, opts:['SS','ISO','絞り','ホワイトバランス'], ans:0},
-    {blank:2, opts:['1/50','1/200','1/30','1/500'], ans:0},
-    {blank:3, opts:['ISO','SS','絞り','露出補正'], ans:0},
-    {blank:4, opts:['絞り','ISO','SS','ゲイン'], ans:0},
-    {blank:5, opts:['ノイズ','手ブレ','フリッカー','色かぶり'], ans:0},
+    {blank:1, opts:['ISO','絞り','ホワイトバランス','SS'], ans:3},
+    {blank:2, opts:['1/200','1/30','1/500','1/50'], ans:3},
+    {blank:3, opts:['SS','絞り','露出補正','ISO'], ans:3},
+    {blank:4, opts:['ISO','SS','ゲイン','絞り'], ans:3},
+    {blank:5, opts:['手ブレ','フリッカー','色かぶり','ノイズ'], ans:3},
    ]},
 
   {type:'input', qnum:'Q7-1', title:'よく使われるフォント①を答えよ',
@@ -585,15 +583,15 @@ const MINI_QUESTIONS=[
   {type:'multi', qnum:'Q9', title:'2026サッカーワールドカップの開催国3つを答えよ',
    sentence:'開催国は[1]・[2]・[3]の3カ国。',
    subs:[
-    {blank:1, opts:['アメリカ','ブラジル','スペイン','フランス'], ans:0},
-    {blank:2, opts:['カナダ','アルゼンチン','ポルトガル','ドイツ'], ans:0},
-    {blank:3, opts:['メキシコ','チリ','モロッコ','日本'], ans:0},
+    {blank:1, opts:['ブラジル','スペイン','フランス','アメリカ'], ans:3},
+    {blank:2, opts:['アルゼンチン','ポルトガル','ドイツ','カナダ'], ans:3},
+    {blank:3, opts:['チリ','モロッコ','日本','メキシコ'], ans:3},
    ]},
 
   {type:'multi', qnum:'Q10', title:'映画「インターステラー」の監督を答えよ',
    sentence:'映画「インターステラー」の監督は[1]。',
    subs:[
-    {blank:1, opts:['クリストファー・ノーラン','スティーブン・スピルバーグ','ジェームズ・キャメロン','デニス・ヴィルヌーヴ'], ans:0},
+    {blank:1, opts:['スティーブン・スピルバーグ','ジェームズ・キャメロン','デニス・ヴィルヌーヴ','クリストファー・ノーラン'], ans:3},
    ]},
 
   {type:'input', qnum:'Q11', title:'画家ゴッホの盟友は？',
@@ -602,30 +600,30 @@ const MINI_QUESTIONS=[
   {type:'multi', qnum:'Q12', title:'CVR・CPAの意味を答えよ',
    sentence:'CVRとは[1]や広告に訪れたユーザーのうち[2]（コンバージョン）に至った[3]を示す。CPAとは[4]の成果を獲得するためにかかった[5]。',
    subs:[
-    {blank:1, opts:['Webサイト','店舗','SNS','メール'], ans:0},
-    {blank:2, opts:['成果','クリック','閲覧','登録'], ans:0},
-    {blank:3, opts:['割合','金額','件数','順位'], ans:0},
-    {blank:4, opts:['1件','10件','100件','1000件'], ans:0},
-    {blank:5, opts:['広告費用','人件費','制作費','総費用'], ans:0},
+    {blank:1, opts:['店舗','SNS','メール','Webサイト'], ans:3},
+    {blank:2, opts:['クリック','閲覧','登録','成果'], ans:3},
+    {blank:3, opts:['金額','件数','順位','割合'], ans:3},
+    {blank:4, opts:['10件','100件','1000件','1件'], ans:3},
+    {blank:5, opts:['人件費','制作費','総費用','広告費用'], ans:3},
    ]},
 
   {type:'multi', qnum:'Q13', title:'FC（フランチャイズ）の仕組みを答えよ',
    sentence:'[1]が商標や商品・サービス・営業ノウハウをパッケージ化して提供し、[2]がその対価として[3]や加盟金を支払うことで[4]で事業を展開できる仕組み。',
    subs:[
-    {blank:1, opts:['本部（フランチャイザー）','加盟店','消費者','政府'], ans:0},
-    {blank:2, opts:['加盟店（フランチャイジー）','本部','取引先','投資家'], ans:0},
-    {blank:3, opts:['ロイヤリティ','売上','税金','保証金'], ans:0},
-    {blank:4, opts:['同一ブランド','独自ブランド','複数ブランド','無名'], ans:0},
+    {blank:1, opts:['加盟店','消費者','政府','本部（フランチャイザー）'], ans:3},
+    {blank:2, opts:['本部','取引先','投資家','加盟店（フランチャイジー）'], ans:3},
+    {blank:3, opts:['売上','税金','保証金','ロイヤリティ'], ans:3},
+    {blank:4, opts:['独自ブランド','複数ブランド','無名','同一ブランド'], ans:3},
    ]},
 
   {type:'multi', qnum:'Q14', title:'LogとREC.709の違いを答えよ',
    sentence:'Logは[1]ダイナミックレンジを保持し明るい部分と暗い部分の詳細をより多く保持するが[2]が必須。REC.709は[3]の標準的な色域規格でダイナミックレンジが[4]がカラーコレクションは[5]。',
    subs:[
-    {blank:1, opts:['広い','狭い','普通の','固定された'], ans:0},
-    {blank:2, opts:['カラーコレクション','手ブレ補正','ノイズ除去','音声編集'], ans:0},
-    {blank:3, opts:['テレビ放送やWeb動画','映画館','SNS','印刷物'], ans:0},
-    {blank:4, opts:['狭い','広い','可変','無限'], ans:0},
-    {blank:5, opts:['必要ありません','必須です','推奨されます','禁止されています'], ans:0},
+    {blank:1, opts:['狭い','普通の','固定された','広い'], ans:3},
+    {blank:2, opts:['手ブレ補正','ノイズ除去','音声編集','カラーコレクション'], ans:3},
+    {blank:3, opts:['映画館','SNS','印刷物','テレビ放送やWeb動画'], ans:3},
+    {blank:4, opts:['広い','可変','無限','狭い'], ans:3},
+    {blank:5, opts:['必須です','推奨されます','禁止されています','必要ありません'], ans:3},
    ]},
 ];
 let miniQList=[], miniQIndex=0, miniScore=0, miniResults=[];
